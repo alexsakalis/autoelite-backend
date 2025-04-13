@@ -10,12 +10,17 @@ const {
 router.post("/", createAppointment);
 router.get("/", getAppointments);
 
-// POST /api/appointments/upload-photo → Upload one photo
 router.post("/upload-photo", upload.single("photo"), (req, res) => {
-  res.json({
+  if (!req.file) {
+    return res.status(400).json({ error: "No photo file uploaded." });
+  }
+
+  const fileUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+
+  res.status(200).json({
     message: "Photo uploaded successfully",
     filename: req.file.filename,
-    fileUrl: `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`,
+    fileUrl,
   });
 });
 

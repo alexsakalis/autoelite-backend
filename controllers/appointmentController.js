@@ -14,7 +14,6 @@ const createAppointment = async (req, res) => {
   } = req.body;
 
   try {
-    // Insert appointment into the database
     const result = await db.query(
       `INSERT INTO appointments 
         (customer_name, customer_email, customer_number, car_model, appointment_time, status, service_type, notes) 
@@ -34,7 +33,6 @@ const createAppointment = async (req, res) => {
 
     const appointment = result.rows[0];
 
-    // Send confirmation email
     if (customer_email) {
       await sendEmail(
         customer_email,
